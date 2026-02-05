@@ -1,11 +1,6 @@
 import { test, expect } from 'playwright-test-coverage';
 import { Page } from '@playwright/test';
-import { User } from '../src/service/pizzaService';
-
-enum Role {
-  Diner = 'diner',
-  Admin = 'admin',
-}
+import { Role, User } from '../src/service/pizzaService';
 
 async function basicInit(page: Page) {
   let loggedInUser: User | undefined;
