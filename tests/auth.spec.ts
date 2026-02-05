@@ -1,7 +1,7 @@
 import { test, expect } from 'playwright-test-coverage';
 
 test('test', async ({ page }) => {
-    await page.goto('http://localhost:5174/'); await page.goto('http://localhost:5174/');
+    await page.goto('http://localhost:5173/'); await page.goto('http://localhost:5173/');
     await page.getByRole('link', { name: 'Register' }).click();
     await page.getByRole('textbox', { name: 'Full name' }).click();
     await page.getByRole('textbox', { name: 'Full name' }).fill('exampleuser');
