@@ -8,6 +8,13 @@ async function basicInit(page: Page) {
 
   // Authorize login for the given user
   await page.route('*/**/api/auth', async (route) => {
+    const method = route.request().method();
+    if (method === 'DELETE') {
+      loggedInUser = undefined;
+      await route.fulfill({ json: { message: 'logged out' } });
+      return;
+    }
+
     const loginReq = route.request().postDataJSON();
     const user = validUsers[loginReq.email];
     if (!user || user.password !== loginReq.password) {
@@ -19,7 +26,7 @@ async function basicInit(page: Page) {
       user: loggedInUser,
       token: 'abcdef',
     };
-    expect(route.request().method()).toBe('PUT');
+    expect(method).toBe('PUT');
     await route.fulfill({ json: loginRes });
   });
 
@@ -126,4 +133,18 @@ test('purchase with login', async ({ page }) => {
 
   // Check balance
   await expect(page.getByText('0.008')).toBeVisible();
+});
+
+test('logout', async ({ page }) => {
+  await basicInit(page);
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('textbox', { name: 'Email address' }).fill('d@jwt.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('a');
+  await page.getByRole('button', { name: 'Login' }).click();
+  await expect(page.getByRole('link', { name: 'KC' })).toBeVisible();
+
+  await page.getByRole('link', { name: 'Logout' }).click();
+
+  await expect(page.getByRole('link', { name: 'Login' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Register' })).toBeVisible();
 });
