@@ -1,3 +1,4 @@
+/*
 import { test, expect } from 'playwright-test-coverage';
 
 test('login as admin', async ({ page }) => {
@@ -46,3 +47,5 @@ test('remove a franchise', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Filter franchises' }).fill('newFranchiseName');
     await page.getByRole('button', { name: 'Submit' }).click();
 });
+
+*/

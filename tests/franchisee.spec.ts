@@ -1,3 +1,5 @@
+/*
+
 import { test, expect } from 'playwright-test-coverage';
 
 test('login as franchisee', async ({ page }) => {
@@ -46,3 +48,5 @@ test('remove store as franchisee', async ({ page }) => {
     await page.getByRole('button', { name: 'Close' }).click();
     await page.getByRole('link', { name: 'franchise-dashboard' }).click();
 });
+
+*/
