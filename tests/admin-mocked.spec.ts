@@ -112,7 +112,7 @@ test('close franchise (mocked)', async ({ page }) => {
   await loginAsAdmin(page);
 
   await page.getByRole('link', { name: 'Admin' }).click();
-  await page.getByRole('button', { name: 'Close' }).first().click();
+  await page.getByRole('row', { name: /LotaPizza/ }).getByRole('button', { name: 'Close' }).click();
   await page.getByRole('button', { name: 'Close' }).click();
 
   await expect(page.getByRole('heading', { name: 'Franchises' })).toBeVisible();

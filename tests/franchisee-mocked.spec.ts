@@ -50,7 +50,9 @@ async function setupFranchiseeMocks(page: Page) {
       return;
     }
     const body = route.request().postDataJSON();
-    await route.fulfill({ json: { id: '203', name: body.name } });
+    const newStore = { id: `new-${franchise.stores.length + 1}`, name: body.name, totalRevenue: 0 };
+    franchise.stores = [...franchise.stores, newStore];
+    await route.fulfill({ json: newStore });
   });
 
   await page.route(/\/api\/franchise\/[^/]+\/store\/[^/]+$/, async (route) => {
@@ -58,6 +60,9 @@ async function setupFranchiseeMocks(page: Page) {
       await route.fulfill({ status: 405, json: { error: 'Method Not Allowed' } });
       return;
     }
+    const url = new URL(route.request().url());
+    const storeId = url.pathname.split('/').pop();
+    franchise.stores = franchise.stores.filter((store) => store.id !== storeId);
     await route.fulfill({ json: { message: 'store closed' } });
   });
 
@@ -88,7 +93,7 @@ test('create store (mocked)', async ({ page }) => {
   await page.getByPlaceholder('store name').fill('newStoreTest');
   await page.getByRole('button', { name: 'Create' }).click();
 
-  await expect(page.getByRole('heading', { name: 'topSpot' })).toBeVisible();
+  await expect(page.getByRole('cell', { name: 'newStoreTest' })).toBeVisible();
 });
 
 test('close store (mocked)', async ({ page }) => {
@@ -96,8 +101,8 @@ test('close store (mocked)', async ({ page }) => {
   await loginAsFranchisee(page);
 
   await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
-  await page.getByRole('button', { name: 'Close' }).first().click();
+  await page.getByRole('row', { name: /Provo/ }).getByRole('button', { name: 'Close' }).click();
   await page.getByRole('button', { name: 'Close' }).click();
 
-  await expect(page.getByRole('heading', { name: 'topSpot' })).toBeVisible();
+  await expect(page.getByRole('cell', { name: 'Provo' })).toBeHidden();
 });
