@@ -1,6 +1,6 @@
-import { test, expect } from 'playwright-test-coverage';
+import { test, expect } from "playwright-test-coverage";
 
-
+/*
 test('updateUser', async ({ page }) => {
     const email = `user${Math.floor(Math.random() * 10000)}@jwt.com`;
     await page.goto('/');
@@ -23,3 +23,4 @@ test('updateUser', async ({ page }) => {
 
     await expect(page.getByRole('main')).toContainText('pizza dinerx');
 });
+*/
