@@ -52,6 +52,11 @@ export default function AdminDashboard(props: Props) {
     setUserList(await pizzaService.getUsers(userPage, 10, `*${filterUserRef.current?.value}*`));
   }
 
+  async function closeUser(user: User) {
+    await pizzaService.deleteUser(user);
+    setUserList(await pizzaService.getUsers(userPage, 5, '*'));
+  }
+
   function formatRoles(user: User) {
     if (!user.roles?.length) {
       return '';
@@ -154,7 +159,7 @@ export default function AdminDashboard(props: Props) {
                     <table className="min-w-full divide-y divide-gray-200">
                       <thead className="uppercase text-neutral-100 bg-slate-400 border-b-2 border-gray-500">
                         <tr>
-                          {['Name', 'Email', 'Role'].map((header) => (
+                          {['Name', 'Email', 'Role', 'Action'].map((header) => (
                             <th key={header} scope="col" className="px-6 py-3 text-center text-xs font-medium">
                               {header}
                             </th>
@@ -167,6 +172,12 @@ export default function AdminDashboard(props: Props) {
                             <td className="text-start px-2 whitespace-nowrap text-sm text-gray-800">{user.name}</td>
                             <td className="text-start px-2 whitespace-nowrap text-sm text-gray-800">{user.email}</td>
                             <td className="text-start px-2 whitespace-nowrap text-sm text-gray-800">{formatRoles(user)}</td>
+                            <td className="px-6 py-1 whitespace-nowrap text-end text-sm font-medium">
+                              <button type="button" className="px-2 py-1 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-1 border-orange-400 text-orange-400 hover:border-orange-800 hover:text-orange-800" onClick={() => closeUser(user)}>
+                                <TrashIcon />
+                                Close
+                              </button>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -178,7 +189,7 @@ export default function AdminDashboard(props: Props) {
                               Submit
                             </button>
                           </td>
-                          <td colSpan={2} className="text-end text-sm font-medium">
+                          <td colSpan={3} className="text-end text-sm font-medium">
                             <button className="w-12 p-1 text-sm font-semibold rounded-lg border border-transparent bg-white text-grey border-grey m-1 hover:bg-orange-200 disabled:bg-neutral-300" onClick={() => setUserPage(userPage - 1)} disabled={userPage <= 0}>
                               «
                             </button>
