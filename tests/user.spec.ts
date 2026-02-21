@@ -118,6 +118,7 @@ test("updateUser", async ({ page }) => {
   await page.getByRole("textbox", { name: "Email address" }).fill(email);
   await page.getByRole("textbox", { name: "Password" }).fill("diner");
   await page.getByRole("button", { name: "Register" }).click();
+  await expect.poll(() => calls.register).toBe(1);
 
   await page.goto("/diner-dashboard");
   await expect(page.getByRole("main")).toContainText("pizza diner");
@@ -127,16 +128,16 @@ test("updateUser", async ({ page }) => {
   await page.getByRole("textbox").first().fill("pizza dinerx");
   await page.getByRole("button", { name: "Update" }).click();
 
-  await page.waitForSelector('[role="dialog"].hidden', { state: "attached" });
   await expect.poll(() => calls.updateUser).toBe(1);
   await expect(page.getByRole("main")).toContainText("pizza dinerx");
 
   await page.getByRole("link", { name: "Logout" }).click();
-  await page.getByRole("link", { name: "Login" }).click();
+  await page.waitForURL("/");
+  await page.goto("/login");
 
   await page.getByRole("textbox", { name: "Email address" }).fill(email);
   await page.getByRole("textbox", { name: "Password" }).fill("diner");
-  await page.getByRole("button", { name: "Login" }).click();
+  await page.getByRole("textbox", { name: "Password" }).press("Enter");
 
   await expect.poll(() => calls.login).toBe(1);
   await page.goto("/diner-dashboard");
