@@ -70,7 +70,7 @@ As described in the course material, the "Lighthouse" feature of Chrome devTools
 
 ### Step 4: Create Accessibility Test Suite
 
-Created four test files covering all the jwt-pizza site pages. For each page, the test navigates to it, runs a scan via the helper function `scanPageA11y()`, logs any violations, and asserts there are none. Tests are expected to fail until violations are fixed later.
+Created four test files covering all the jwt-pizza site pages. Each test is now named as a neutral WCAG AA scan, navigates to a page, runs the helper assertion, and fails when violations are found. The helper also attaches violation artifacts to the Playwright report (`a11y-summary` and `a11y-violations`).
 
 | File                        | Pages Covered                              |
 | --------------------------- | ------------------------------------------ |
@@ -82,11 +82,9 @@ Created four test files covering all the jwt-pizza site pages. For each page, th
 Example test from `a11y-static.spec.ts`:
 
 ```ts
-test("home page has no WCAG AA violations", async ({ page }) => {
+test("WCAG AA scan: home", async ({ page }) => {
   await page.goto("/");
-  const violations = await scanPageA11y(page);
-  logA11yViolations(violations);
-  expect(violations).toHaveLength(0);
+  await expectNoA11yViolations(page, test.info(), "home");
 });
 ```
 
@@ -97,7 +95,7 @@ This test navigates to the home page, scans it for WCAG AA violations using AxeB
 Running the tests can be accomplished by using the following command in the jwt-pizza directory (insert a call to each of the test files to run):
 `npx playwright test tests/[test file name].spec.ts tests/[test file name].spec.ts`
 
-Once the tests finish running, Playwright will produce an HTML file with the findings.
+After the run, open the Playwright HTML report and inspect each failed test’s attachments to identify exact rule IDs and affected nodes for fixing.
 
 ### Step 6: CI Integration
 

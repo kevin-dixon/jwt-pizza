@@ -3,13 +3,13 @@ import { AxeBuilder } from "@axe-core/playwright";
 
 type A11yNode = {
   html?: string;
-  target?: string[];
+  target?: unknown[];
   failureSummary?: string;
 };
 
 type A11yViolation = {
   id: string;
-  impact?: string;
+  impact?: string | null;
   description?: string;
   helpUrl?: string;
   nodes: A11yNode[];
@@ -37,11 +37,12 @@ export async function expectNoA11yViolations(
   pageName: string,
 ) {
   const violations = await scanPageA11y(page);
+  const totalNodes = violations.reduce((sum, v) => sum + v.nodes.length, 0);
   await attachA11yArtifacts(testInfo, pageName, violations);
   logA11yViolations(violations);
   expect(
     violations,
-    `Accessibility violations found on ${pageName}. See attached a11y-summary and a11y-violations artifacts in the HTML report.`,
+    `Accessibility scan failed on ${pageName}: ${violations.length} rule group(s), ${totalNodes} affected node(s). See attached a11y-summary and a11y-violations artifacts in the HTML report.`,
   ).toHaveLength(0);
 }
 
@@ -89,13 +90,17 @@ export function formatA11yViolations(
   pageName: string,
   violations: A11yViolation[],
 ): string {
+  const totalNodes = violations.reduce((sum, v) => sum + v.nodes.length, 0);
+
   if (violations.length === 0) {
-    return `Page: ${pageName}\nNo accessibility violations found.`;
+    return `Page: ${pageName}\nStatus: PASS\nViolation groups: 0\nAffected nodes: 0`;
   }
 
   const lines: string[] = [
     `Page: ${pageName}`,
+    "Status: FAIL",
     `Violation groups: ${violations.length}`,
+    `Affected nodes: ${totalNodes}`,
     "",
   ];
 
@@ -110,7 +115,8 @@ export function formatA11yViolations(
     lines.push(`   affected nodes: ${violation.nodes.length}`);
 
     violation.nodes.forEach((node) => {
-      const targets = node.target?.join(", ") ?? "unknown target";
+      const targets =
+        node.target?.map((t) => String(t)).join(", ") ?? "unknown target";
       lines.push(`   - target: ${targets}`);
       if (node.failureSummary) {
         lines.push(

@@ -10,22 +10,22 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test("home page has no WCAG AA violations", async ({ page }) => {
+test("WCAG AA scan: home", async ({ page }) => {
   await page.goto("/");
   await expectNoA11yViolations(page, test.info(), "home");
 });
 
-test("about page has no WCAG AA violations", async ({ page }) => {
+test("WCAG AA scan: about", async ({ page }) => {
   await page.goto("/about");
   await expectNoA11yViolations(page, test.info(), "about");
 });
 
-test("history page has no WCAG AA violations", async ({ page }) => {
+test("WCAG AA scan: history", async ({ page }) => {
   await page.goto("/history");
   await expectNoA11yViolations(page, test.info(), "history");
 });
 
-test("not found page has no WCAG AA violations", async ({ page }) => {
+test("WCAG AA scan: not-found", async ({ page }) => {
   await page.goto("/this-page-does-not-exist");
   await expectNoA11yViolations(page, test.info(), "not-found");
 });

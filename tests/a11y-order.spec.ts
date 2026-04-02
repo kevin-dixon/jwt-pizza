@@ -60,19 +60,19 @@ async function setupOrderMocks(page: Page) {
   });
 }
 
-test("menu page has no WCAG AA violations", async ({ page }) => {
+test("WCAG AA scan: menu", async ({ page }) => {
   await setupOrderMocks(page);
   await page.goto("/menu");
   await expectNoA11yViolations(page, test.info(), "menu");
 });
 
-test("diner dashboard has no WCAG AA violations", async ({ page }) => {
+test("WCAG AA scan: diner-dashboard", async ({ page }) => {
   await setupOrderMocks(page);
   await page.goto("/diner-dashboard");
   await expectNoA11yViolations(page, test.info(), "diner-dashboard");
 });
 
-test("delivery page has no WCAG AA violations", async ({ page }) => {
+test("WCAG AA scan: delivery", async ({ page }) => {
   await page.addInitScript(() => {
     history.replaceState(
       {

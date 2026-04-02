@@ -10,12 +10,12 @@ test.beforeEach(async ({ page }) => {
   });
 });
 
-test("login page has no WCAG AA violations", async ({ page }) => {
+test("WCAG AA scan: login", async ({ page }) => {
   await page.goto("/login");
   await expectNoA11yViolations(page, test.info(), "login");
 });
 
-test("register page has no WCAG AA violations", async ({ page }) => {
+test("WCAG AA scan: register", async ({ page }) => {
   await page.goto("/register");
   await expectNoA11yViolations(page, test.info(), "register");
 });

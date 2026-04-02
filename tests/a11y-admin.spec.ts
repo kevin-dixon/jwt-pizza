@@ -66,13 +66,13 @@ async function setupFranchiseeMocks(page: Page) {
   });
 }
 
-test("admin dashboard has no WCAG AA violations", async ({ page }) => {
+test("WCAG AA scan: admin-dashboard", async ({ page }) => {
   await setupAdminMocks(page);
   await page.goto("/admin-dashboard");
   await expectNoA11yViolations(page, test.info(), "admin-dashboard");
 });
 
-test("franchise dashboard has no WCAG AA violations", async ({ page }) => {
+test("WCAG AA scan: franchise-dashboard", async ({ page }) => {
   await setupFranchiseeMocks(page);
   await page.goto("/franchise-dashboard");
   await expectNoA11yViolations(page, test.info(), "franchise-dashboard");
