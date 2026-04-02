@@ -90,14 +90,21 @@ test("WCAG AA scan: home", async ({ page }) => {
 
 This test navigates to the home page, scans it for WCAG AA violations using AxeBuilder, prints any violations to the console for debugging, then fails if any are found. All other tests in the suite follow this same pattern.
 
-### Step 5: Violation Discovery & Fixes
+### Step 5: Run Tests & Analyze Results
 
 Running the tests can be accomplished by using the following command in the jwt-pizza directory (insert a call to each of the test files to run):
 `npx playwright test tests/[test file name].spec.ts tests/[test file name].spec.ts`
 
-After the run, open the Playwright HTML report and inspect each failed test’s attachments to identify exact rule IDs and affected nodes for fixing.
+After the tests run, open the Playwright HTML report and inspect each failed test’s attachments to identify exact rule IDs and affected nodes for fixing.
+`npx playwright show-report`
 
-### Step 6: CI Integration
+Summary Page: ![Playwright HTML summary page](./testsSummaryCR.jpeg)
+
+Example Violation Finding: ![Playwright HTML example finding](./exampleResultsCR.jpeg)
+
+### Step 6: Fix Violations
+
+### Step 7: CI Integration
 
 # My Learning
 
