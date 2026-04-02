@@ -104,26 +104,8 @@ Example Violation Finding: ![Playwright HTML example finding](./exampleResultsCR
 
 ### Step 6: Fix Violations
 
+Now that I've found all the violations that need to be fixed to meet AA standards, I can plan how to fix those in the codebase. Most of these fixes are similar and pretty minimal changes to the pages, so we can easily bring jwt-pizza up to standards.
+
 ### Step 7: CI Integration
 
-# My Learning
-
 # Conclusion
-
----
-
-## Accessibility Testing Info From Course Instruction
-
-Accessibility testing ensures that your application can service a diverse population of customers. Not only does this help some of the most disadvantaged members of our community, it can also be a violation of local or federal law to not adhere to the most basic levels of accessibility support. This includes high contrast themes, support for screen readers, and proper keyboard navigation.
-
-The most popular accessibility guideline in North America is the Web Content Accessibility Guidelines (WCAG). Not only does this guideline provide 12 comprehensive guidelines organized under the categories of Perceivable, Operable, Understandable, and Robust, it also provides a full test suite that you can apply to your application.
-
-You can also test your accessibility using Google Chrome's Lighthouse utility. Open up JWT Pizza in Chrome and access the `Lighthouse` tab in the developer tools. Make sure you have **Accessibility** checked and press the `Analyze page load` button.
-
-> > image
-
-After a brief moment it will report a score for your home page. It looks like JWT Pizza is doing alright with a score of 82, but there are a couple of simple things that can be done to easily bump it up to a perfect 100.
-
-> > image
-
-💡 Accessibility testing in an emerging and interesting area to invest your time in. Perhaps you should consider researching this for your curiosity project.
