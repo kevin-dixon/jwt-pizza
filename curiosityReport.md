@@ -8,7 +8,7 @@ Accessibility testing was briefly mentioned in the "testingCategories" reading f
 
 # Why Accessibility Matters
 
-Website accessibility is important not only to ensure equal access for the non-insignificant number of users on the internet with disabilites affecting their website usage, but also to provide a better UX experience for everyone. It has been studied and proven that when websites are developed to meet high accessibility standards, it improves the user experience for non-disabled ussers. In addition, many types of companies are required by law to meet certain standards for accessibility. Overall, accessibity greatly improves the design of software and websites through a easily measured set of standards. With the rise of AI coding agents, there are even more opportunities to provide a good web experience to disabled users.
+Website accessibility (sometimes abbreviated in development as "a11y") is important not only to ensure equal access for the non-insignificant number of users on the internet with disabilites affecting their website usage, but also to provide a better UX experience for everyone. It has been studied and proven that when websites are developed to meet high accessibility standards, it improves the user experience for non-disabled ussers. In addition, many types of companies are required by law to meet certain standards for accessibility. Overall, accessibity greatly improves the design of software and websites through a easily measured set of standards. With the rise of AI coding agents, there are even more opportunities to provide a good web experience to disabled users.
 
 # Accessibility Levels
 
@@ -34,7 +34,7 @@ Here are the following features that Playwright provides as tools to measure how
 ### Step 1: Setup
 
 1. Install the testing library in the jwt-pizza directory
-   > > npm install --save-dev @axe-core/playwright
+   `npm install --save-dev @axe-core/playwright`
 1. Verify installation by checking for the @axe-core/playwright package in package.json under devDependencies
 
 ### Step 2: Accessibility Test Helpers
@@ -55,11 +55,49 @@ Using a coding assitant, I did the following:
 
 3. Each function calls `analyze()` to run the scan and extracts violations from results
 
-### Step 3: Set Baseline Coverage
+### Step 3: Check Current Coverage
+
+As described in the course material, the "Lighthouse" feature of Chrome devTools can be used to get a usability score. Here are the scores for each of the pages in the website, with relevant findings.
+
+| Page                                        | Score | Issues                                                           |
+| ------------------------------------------- | ----- | ---------------------------------------------------------------- |
+| `/` (home)                                  | 86    | img alt attributes, link names, color contrast                   |
+| `/login`                                    | 85    | button names, img alt attributes, color contrast                 |
+| `/menu`                                     | 85    | img alt attributes, form elements without labels, color contrast |
+| `/payment`, `/delivery`, `/diner-dashboard` | 90    | img alt attributes, color contrast                               |
+| `/about`, `/history`, `/docs`               | 90    | img alt attributes, color contrast                               |
+| admin & franchise pages                     | 90    | img alt attributes, color contrast                               |
 
 ### Step 4: Create Accessibility Test Suite
 
+Created four test files covering all the jwt-pizza site pages. For each page, the test navigates to it, runs a scan via the helper function `scanPageA11y()`, logs any violations, and asserts there are none. Tests are expected to fail until violations are fixed later.
+
+| File                        | Pages Covered                              |
+| --------------------------- | ------------------------------------------ |
+| `tests/a11y-static.spec.ts` | `/`, `/about`, `/history`, 404             |
+| `tests/a11y-auth.spec.ts`   | `/login`, `/register`                      |
+| `tests/a11y-order.spec.ts`  | `/menu`, `/diner-dashboard`, `/delivery`   |
+| `tests/a11y-admin.spec.ts`  | `/admin-dashboard`, `/franchise-dashboard` |
+
+Example test from `a11y-static.spec.ts`:
+
+```ts
+test("home page has no WCAG AA violations", async ({ page }) => {
+  await page.goto("/");
+  const violations = await scanPageA11y(page);
+  logA11yViolations(violations);
+  expect(violations).toHaveLength(0);
+});
+```
+
+This test navigates to the home page, scans it for WCAG AA violations using AxeBuilder, prints any violations to the console for debugging, then fails if any are found. All other tests in the suite follow this same pattern.
+
 ### Step 5: Violation Discovery & Fixes
+
+Running the tests can be accomplished by using the following command in the jwt-pizza directory (insert a call to each of the test files to run):
+`npx playwright test tests/[test file name].spec.ts tests/[test file name].spec.ts`
+
+Once the tests finish running, Playwright will produce an HTML file with the findings.
 
 ### Step 6: CI Integration
 
