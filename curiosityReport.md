@@ -104,7 +104,25 @@ Example Violation Finding: ![Playwright HTML example finding](./exampleResultsCR
 
 ### Step 6: Fix Violations
 
-Now that I've found all the violations that need to be fixed to meet AA standards, I can plan how to fix those in the codebase. Most of these fixes are similar and pretty minimal changes to the pages, so we can easily bring jwt-pizza up to standards.
+Now that I found the violations on each page, I can go fix them. Most of these changes are fairly simple to execute and won't affect the functionality of the code. Adding accessibility is more a matter of attention than effort. For example, the home page was fixed with minimal class-only updates, keeping the same color families but adjusting values to improve contrast:
+
+1. Breadcrumb home link text was darkened (`gray-500` -> `gray-700`) while preserving existing layout and navigation behavior.
+
+```tsx
+<NavLink className="flex items-center text-sm text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600" to="/">
+```
+
+2. Quote author text was darkened (`gray-400` -> `gray-600`) so attribution text remains readable on white cards.
+
+```tsx
+<span className="text-gray-600"> — {props.author}</span>
+```
+
+3. The shared page background was darkened (`slate-600` -> `slate-700`) to improve contrast against existing orange headings without changing component structure.
+
+```tsx
+<div className="bg-slate-700 flex flex-col justify-center sm:items-center mx-auto">
+```
 
 ### Step 7: CI Integration
 
