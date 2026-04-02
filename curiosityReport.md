@@ -8,11 +8,11 @@ Accessibility testing was briefly mentioned in the "testingCategories" reading f
 
 # Why Accessibility Matters
 
-Website accessibility (sometimes abbreviated in development as "a11y") is important not only to ensure equal access for the non-insignificant number of users on the internet with disabilites affecting their website usage, but also to provide a better UX experience for everyone. It has been studied and proven that when websites are developed to meet high accessibility standards, it improves the user experience for non-disabled ussers. In addition, many types of companies are required by law to meet certain standards for accessibility. Overall, accessibity greatly improves the design of software and websites through a easily measured set of standards. With the rise of AI coding agents, there are even more opportunities to provide a good web experience to disabled users.
+Website accessibility (sometimes abbreviated in development as "a11y") is important not only to ensure equal access for the non-insignificant number of users on the internet with disabilities affecting their website usage, but also to provide a better UX experience for everyone. It has been studied and proven that when websites are developed to meet high accessibility standards, it improves the user experience for non-disabled users. In addition, many types of companies are required by law to meet certain standards for accessibility. Overall, accessibility greatly improves the design of software and websites through an easily measured set of standards. With the rise of AI coding agents, there are even more opportunities to provide a good web experience to disabled users.
 
 # Accessibility Levels
 
-The primary accessbility standard are the [Web Content Accessibility Guidelines](https://www.w3.org/TR/WCAG22/) (WCAG) published by the [World Wide Web Consortium](https://www.w3.org/) (W3C) that measure based on four principles; Perceivable, Operable, Understandable, and Robust. To measure the amount of adherence and coverage of the guidelines, there are three levels of conformance that are provided:
+The primary accessibility standards are the [Web Content Accessibility Guidelines](https://www.w3.org/TR/WCAG22/) (WCAG) published by the [World Wide Web Consortium](https://www.w3.org/) (W3C), which are based on four principles: Perceivable, Operable, Understandable, and Robust. To measure the amount of adherence and coverage of the guidelines, there are three levels of conformance that are provided:
 
 1. Level A (minimum) - basic accessibility features that remove the most significant barriers, but don't guarantee full access
 1. Level AA (standard) - industry standard and common legal requirement, covers common barriers for users with disabilities
@@ -25,8 +25,8 @@ Here are the following features that Playwright provides as tools to measure how
 | Feature                          | Description                                                                                                                                                                               |
 | -------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Scanning an entire page          | Import @axe-core/playwright package and apply it in a test to scan an entire page for any accessibility violations to be found                                                            |
-| Scanning specific part of a page | Use the AxeBuilder class to constrain an accessbility scan to run against a specific portion of a page in its current state                                                               |
-| Scan for WCAG violations         | You can constrain a scan to only those ruls tagged for specific WCAG success criteria, such as only (A) or (AA) standards                                                                 |
+| Scanning specific part of a page | Use the AxeBuilder class to constrain an accessibility scan to run against a specific portion of a page in its current state                                                              |
+| Scan for WCAG violations         | You can constrain a scan to only those rules tagged for specific WCAG success criteria, such as only (A) or (AA) standards                                                                |
 | Known issue handling             | There are various ways to exclude individual elements, certain standards, or otherwise known issues from a scan so that they can be worked on separately without interrupting the testing |
 
 # My Implementation
@@ -39,7 +39,7 @@ Here are the following features that Playwright provides as tools to measure how
 
 ### Step 2: Accessibility Test Helpers
 
-Using a coding assitant, I did the following:
+Using a coding assistant, I did the following:
 
 1. Created `tests/a11y-helpers.ts` utility file with reusable functions:
    - `scanPageA11y()` - scans entire page for WCAG AA violations
@@ -151,3 +151,5 @@ In `.github/workflows/ci.yml`, add the accessibility step before the coverage/un
 ```
 
 # Conclusion
+
+Accessibility testing turned out to be an easy, high value addition to the website. The violations were real, they were fixable with minimal effort, and the automated tests now ensure they stay fixed along with any future changes. What stood out to me was how simple the fixes were, which reinforces the idea that accessibility is mostly a matter of awareness rather than a large engineering undertaking.
