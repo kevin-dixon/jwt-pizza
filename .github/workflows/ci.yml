@@ -38,9 +38,13 @@ jobs:
           npm ci && npm run build
           cp dist/index.html dist/404.html
 
-      - name: Run tests
+      - name: Run accessibility tests
         run: |
           npx playwright install --with-deps chromium
+          npm run test:a11y
+
+      - name: Run tests
+        run: |
           npm run test:coverage
 
       - name: Update coverage

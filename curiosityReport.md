@@ -126,4 +126,28 @@ Now that I found the violations on each page, I can go fix them. Most of these c
 
 ### Step 7: CI Integration
 
+#### 1. Add npm Scripts
+
+In `package.json`, add a pretest hook and the test script listing all accessibility test files:
+
+```json
+"pretest:a11y": "node scripts/check-port.js 5173",
+"test:a11y": "playwright test tests/a11y-static.spec.ts tests/a11y-auth.spec.ts tests/a11y-order.spec.ts tests/a11y-admin.spec.ts",
+```
+
+#### 2. Add CI Step
+
+In `.github/workflows/ci.yml`, add the accessibility step before the coverage/unit-test step. Playwright's browser binaries must be installed explicitly in CI since they aren't committed to the repo:
+
+```yaml
+- name: Run accessibility tests
+  run: |
+    npx playwright install --with-deps chromium
+    npm run test:a11y
+
+- name: Run tests
+  run: |
+    npm run test:coverage
+```
+
 # Conclusion
