@@ -46,7 +46,14 @@ Using a coding assitant, I did the following:
    - `expectNoA11yViolations()` - assertion to fail tests on violations
    - `scanElementA11y()` - scans specific element for violations
    - `logA11yViolations()` - outputs detailed violation reports
-2. Functions filter scans to WCAG 2.2 AA standard and support rule customization
+
+2. Implemented using `AxeBuilder` class from `@axe-core/playwright`:
+   - `new AxeBuilder({ page })` initializes a scan builder for a Playwright page
+   - `.withTags(['wcag2aa'])` filters results to WCAG 2.2 AA level only
+   - `.include([selector])` restricts scan to a specific element
+   - `.analyze()` executes the scan and returns violations and passes
+
+3. Each function calls `analyze()` to run the scan and extracts violations from results
 
 ### Step 3: Set Baseline Coverage
 

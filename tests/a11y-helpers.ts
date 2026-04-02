@@ -1,52 +1,33 @@
-import { Page, expect } from "@playwright/test";
-import { injectAxe, checkA11y, getViolations } from "@axe-core/playwright";
+import { Page } from "@playwright/test";
+import { AxeBuilder } from "@axe-core/playwright";
 
 /**
  * Scans a page for WCAG 2.2 AA accessibility violations
  * @param page - Playwright page instance
- * @param options - Optional configuration for the scan
  */
-export async function scanPageA11y(
-  page: Page,
-  options?: {
-    exclude?: string[];
-    include?: string[];
-    rules?: Record<string, boolean>;
-  },
-) {
-  await injectAxe(page);
+export async function scanPageA11y(page: Page) {
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2aa"])
+    .analyze();
 
-  const violations = await getViolations(page, {
-    standards: "wcag2aa",
-    rules: options?.rules,
-    exclude: options?.exclude,
-    include: options?.include,
-  });
-
-  return violations;
+  return results.violations;
 }
 
 /**
  * Asserts that a page has no WCAG 2.2 AA violations
  * @param page - Playwright page instance
- * @param options - Optional configuration for the scan
  */
-export async function expectNoA11yViolations(
-  page: Page,
-  options?: {
-    exclude?: string[];
-    include?: string[];
-    rules?: Record<string, boolean>;
-  },
-) {
-  await injectAxe(page);
+export async function expectNoA11yViolations(page: Page) {
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2aa"])
+    .analyze();
 
-  await checkA11y(page, null, {
-    standards: "wcag2aa",
-    rules: options?.rules,
-    exclude: options?.exclude,
-    include: options?.include,
-  });
+  if (results.violations.length > 0) {
+    logA11yViolations(results.violations);
+    throw new Error(
+      `Found ${results.violations.length} accessibility violation(s)`,
+    );
+  }
 }
 
 /**
@@ -55,14 +36,12 @@ export async function expectNoA11yViolations(
  * @param selector - CSS selector of the element to scan
  */
 export async function scanElementA11y(page: Page, selector: string) {
-  await injectAxe(page);
+  const results = await new AxeBuilder({ page })
+    .include([selector])
+    .withTags(["wcag2aa"])
+    .analyze();
 
-  const violations = await getViolations(page, {
-    standards: "wcag2aa",
-    include: [selector],
-  });
-
-  return violations;
+  return results.violations;
 }
 
 /**
